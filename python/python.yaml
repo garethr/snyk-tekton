@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: snyk-python
+spec:
+  inputs:
+    resources:
+    - name: source
+      type: git
+      targetPath: source
+    params:
+    - name: command
+      default: test
+    - name: args
+      type: array
+      default: []
+    - name: snyk-secret
+      type: string
+      description: name of the secret holding the Snyk API token
+      default: snyk
+
+  steps:
+  - name: snyk
+    workingdir: /workspace/source
+    image: "garethr/snyk-python:latest"
+    command:
+      - snyk
+    args:
+      - $(inputs.params.command)
+      - $(inputs.params.args)
+    env:
+    - name: SNYK_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: $(inputs.params.snyk-secret)
+          key: token

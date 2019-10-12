@@ -1,0 +1,41 @@
+# Snyk Tekton Tasks
+
+![](https://github.com/garethr/snyk-tekton/workflows/Generate%20Snyk%20Tekton%20Tasks/badge.svg)
+
+A set of [Tekton Tasks](https://tekton.dev/) for using [Snyk](https://snyk.io) to check for
+vulnerabilities in your projects. A different task is required depending on which language or build tool
+you are using. We currently support:
+
+* [DotNet](dotnet)
+* [Golang](golang)
+* [Gradle](gradle)
+* [Maven](maven)
+* [Node](node)
+* [PHP](php)
+* [Python](python)
+* [Ruby](ruby)
+* [Scala](scala)
+
+Here's an example of using one of the Tasks, in this case to test a Go project:
+
+```yaml
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: snyk-golang-example
+spec:
+  taskRef:
+    name: snyk-golang
+  inputs:
+    resources:
+    - name: source
+      resourceSpec:
+        type: git
+        params:
+        - name: revision
+          value: master
+        - name: url
+          value: https://github.com/instrumenta/conftest.gif
+```
+
+See the individual Actions linked above for per-language instructions.
