@@ -24,8 +24,9 @@ spec:
     workingdir: /workspace/source
     image: "garethr/snyk-maven:latest"
     command:
-      - snyk
+      - /usr/local/bin/docker-entrypoint.sh
     args:
+      - snyk
       - $(inputs.params.command)
       - $(inputs.params.args)
     env:
