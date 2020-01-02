@@ -19,6 +19,7 @@ require 'fileutils'
   "Python",
   "Ruby",
   "Scala",
+  "Swift",
 ]
 
 templatename = File.join("_templates", "BASE.md.erb")

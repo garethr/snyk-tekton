@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
-  name: snyk-dotnet
+  name: snyk-swift
 spec:
   inputs:
     resources:
@@ -22,7 +22,7 @@ spec:
   steps:
   - name: snyk
     workingdir: /workspace/source
-    image: "snyk/snyk:dotnet"
+    image: "snyk/snyk:swift"
     command:
       - /usr/local/bin/docker-entrypoint.sh
     args:

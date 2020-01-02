@@ -22,7 +22,7 @@ spec:
   steps:
   - name: snyk
     workingdir: /workspace/source
-    image: "garethr/snyk-python:latest"
+    image: "snyk/snyk:python"
     command:
       - /usr/local/bin/docker-entrypoint.sh
     args:

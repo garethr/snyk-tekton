@@ -22,7 +22,7 @@ spec:
   steps:
   - name: snyk
     workingdir: /workspace/source
-    image: "garethr/snyk-<%= @variant.downcase %>:latest"
+    image: "snyk/snyk:<%= @variant.downcase %>"
     command:
       - /usr/local/bin/docker-entrypoint.sh
     args:

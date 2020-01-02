@@ -22,7 +22,7 @@ spec:
   steps:
   - name: snyk
     workingdir: /workspace/source
-    image: "garethr/snyk-maven:latest"
+    image: "snyk/snyk:maven"
     command:
       - /usr/local/bin/docker-entrypoint.sh
     args:

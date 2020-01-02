@@ -15,6 +15,7 @@ you are using. We currently support:
 * [Python](python)
 * [Ruby](ruby)
 * [Scala](scala)
+* [Swift](swift)
 
 Here's an example of using one of the Tasks, in this case to test a Go project:
 

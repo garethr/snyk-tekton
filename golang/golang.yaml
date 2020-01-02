@@ -22,7 +22,7 @@ spec:
   steps:
   - name: snyk
     workingdir: /workspace/source
-    image: "garethr/snyk-golang:latest"
+    image: "snyk/snyk:golang"
     command:
       - /usr/local/bin/docker-entrypoint.sh
     args:

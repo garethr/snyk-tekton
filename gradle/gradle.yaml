@@ -22,7 +22,7 @@ spec:
   steps:
   - name: snyk
     workingdir: /workspace/source
-    image: "garethr/snyk-gradle:latest"
+    image: "snyk/snyk:gradle"
     command:
       - /usr/local/bin/docker-entrypoint.sh
     args:

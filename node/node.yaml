@@ -22,7 +22,7 @@ spec:
   steps:
   - name: snyk
     workingdir: /workspace/source
-    image: "garethr/snyk-node:latest"
+    image: "snyk/snyk:node"
     command:
       - /usr/local/bin/docker-entrypoint.sh
     args:
