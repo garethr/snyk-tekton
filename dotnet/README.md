@@ -21,23 +21,17 @@ kubectl create secret generic snyk --from-literal=token=abcd1234
 You can use the Task as follows:
 
 ```yaml
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
   name: snyk-dotnet-example
 spec:
   taskRef:
     name: snyk-dotnet
-  inputs:
-    resources:
-    - name: source
-      resourceSpec:
-        type: git
-        params:
-        - name: revision
-          value: master
-        - name: url
-          value: https://github.com/instrumenta/conftest.git
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: my-source
 ```
 
 The Snyk DotNet Task has parameters which are passed to the underlying image:
@@ -57,24 +51,18 @@ It also has resources for loading content for testing
 For example, you can choose to only report on high severity vulnerabilities.
 
 ```yaml
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
   name: snyk-dotnet-example
 spec:
   taskRef:
     name: snyk-dotnet
-  inputs:
-    resources:
-    - name: source
-      resourceSpec:
-        type: git
-        params:
-        - name: revision
-          value: master
-        - name: url
-          value: https://github.com/instrumenta/conftest.git
-    params:
-    - name: args
-      value: "--severity-threshold=high"
+  params:
+  - name: args
+    value: "--severity-threshold=high"
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: my-source
 ```

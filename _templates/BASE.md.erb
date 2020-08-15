@@ -11,23 +11,66 @@ you are using. We currently support:
 Here's an example of using one of the Tasks, in this case to test a Go project:
 
 ```yaml
-apiVersion: tekton.dev/v1alpha1
-kind: TaskRun
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
 metadata:
-  name: snyk-golang-example
+  name: snyk-golang-pipeline
 spec:
-  taskRef:
-    name: snyk-golang
-  inputs:
-    resources:
+  params:
+  - name: git-url
+  - name: git-revision
+    default: master
+  workspaces:
+  - name: shared-workspace
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: $(params.git-url)
+    - name: revision
+      value: $(params.git-revision)
+  - name: check-for-vulnerabilities
+    taskRef:
+      name: snyk-golang
+    runAfter:
+    - fetch-repository
+    workspaces:
     - name: source
-      resourceSpec:
-        type: git
-        params:
-        - name: revision
-          value: master
-        - name: url
-          value: https://github.com/instrumenta/conftest.gif
+      workspace: shared-workspace
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: snykly-source-pvc
+spec:
+  resources:
+    requests:
+      storage: 200M
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: snykly
+spec:
+  params:
+  - name: git-url
+    value: https://github.com/garethr/snykly
+  pipelineRef:
+    name: snyk-golang-pipeline
+  workspaces:
+  - name: shared-workspace
+    persistentvolumeclaim:
+      claimName: snykly-source-pvc
 ```
+
+![Snykly in Tekton](assets/snyk-tekton.png)
 
 See the individual Actions linked above for per-language instructions.
