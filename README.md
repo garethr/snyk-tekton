@@ -16,6 +16,9 @@ you are using. We currently support:
 * [Ruby](ruby)
 * [Scala](scala)
 * [Swift](swift)
+* [Contaners](container)
+* [Infrastructure as Code](iac)
+
 
 Here's an example of using one of the Tasks, in this case to test a Go project:
 
