@@ -42,11 +42,10 @@ The Snyk Golang Task has parameters which are passed to the underlying image:
 | commands | test | Specify which command to run, for instance test or monitor |
 | snyk-secret | snyk | The name of the secret which stores the Snyk API token |
 
-It also has resources for loading content for testing
 
-| Resource | Description |
+| Workspace | Description |
 | --- | --- |
-| source | A git-type PipelineResource specifying the location of the source to build |
+| source | A [Tekton Workspace](https://github.com/tektoncd/pipeline/blob/master/docs/workspaces.md) containing the source code to test |
 
 For example, you can choose to only report on high severity vulnerabilities.
 
