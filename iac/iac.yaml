@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: snyk-iac
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: test
+    tekton.dev/displayName: "Snyk Infrastructure as Code"
+spec:
+  description: >-
+    A task for testing infrastructure as code files for misconfigurations using Snyk
+  workspaces:
+  - name: source
+  params:
+  - name: file
+  - name: command
+    default: test
+  - name: args
+    type: array
+    default: []
+  - name: snyk-secret
+    type: string
+    description: name of the secret holding the Snyk API token
+    default: snyk
+  steps:
+  - name: snyk-iac
+    workingDir: $(workspaces.source.path)
+    image: "snyk/snyk:linux"
+    command:
+      - /usr/local/bin/docker-entrypoint.sh
+    args:
+      - snyk
+      - iac
+      - $(params.command)
+      - $(params.file)
+      - $(params.args)
+    env:
+    - name: SNYK_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: $(params.snyk-secret)
+          key: token

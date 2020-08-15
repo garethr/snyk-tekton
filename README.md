@@ -19,6 +19,10 @@ you are using. We currently support:
 
 Here's an example of using one of the Tasks, in this case to test a Go project:
 
+![Snykly in Tekton](assets/snyk-tekton.png)
+
+An example pipeline definition using several of these tasks together:
+
 ```yaml
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
@@ -51,6 +55,33 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+  - name: check-for-container-vulnerabilities
+    taskRef:
+      name: snyk-container
+    params:
+    - name: image
+      value: ubuntu:18.04
+    - name: args
+      value:
+      - --severity-threshold=high
+    runAfter:
+    - fetch-repository
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+
+  - name: check-for-misconfigurations
+    taskRef:
+      name: snyk-iac
+    params:
+    - name: file
+      value: deployment.yaml
+    runAfter:
+    - fetch-repository
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -80,6 +111,5 @@ spec:
       claimName: snykly-source-pvc
 ```
 
-![Snykly in Tekton](assets/snyk-tekton.png)
 
 See the individual Actions linked above for per-language instructions.

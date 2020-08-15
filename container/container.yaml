@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: snyk-container
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: test
+    tekton.dev/displayName: "Snyk Container"
+spec:
+  description: >-
+    A task for testing container images for vulnerabilities using Snyk
+  workspaces:
+  - name: source
+  params:
+  - name: image
+  - name: command
+    default: test
+  - name: args
+    type: array
+    default: []
+  - name: snyk-secret
+    type: string
+    description: name of the secret holding the Snyk API token
+    default: snyk
+  steps:
+  - name: snyk-container
+    workingDir: $(workspaces.source.path)
+    image: "snyk/snyk:linux"
+    command:
+      - /usr/local/bin/docker-entrypoint.sh
+    args:
+      - snyk
+      - container
+      - $(params.command)
+      - $(params.image)
+      - $(params.args)
+    env:
+    - name: SNYK_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: $(params.snyk-secret)
+          key: token
