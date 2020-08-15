@@ -29,6 +29,33 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+  - name: check-for-container-vulnerabilities
+    taskRef:
+      name: snyk-container
+    params:
+    - name: image
+      value: ubuntu:18.04
+    - name: args
+      value:
+      - --severity-threshold=high
+    runAfter:
+    - fetch-repository
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+
+  - name: check-for-misconfigurations
+    taskRef:
+      name: snyk-iac
+    params:
+    - name: file
+      value: deployment.yaml
+    runAfter:
+    - fetch-repository
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -59,7 +59,8 @@ spec:
     name: snyk-golang
   params:
   - name: args
-    value: "--severity-threshold=high"
+  value:
+  - --severity-threshold=high
   workspaces:
   - name: source
     persistentVolumeClaim:
