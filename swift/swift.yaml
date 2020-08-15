@@ -7,6 +7,7 @@ metadata:
   annotations:
     tekton.dev/pipelines.minVersion: "0.12.1"
     tekton.dev/tags: test
+    tekton.dev/displayName: "Snyk Open Source (Swift)"
 spec:
   description: >-
     A task for testing Swift applications for vulnerabilities using Snyk
