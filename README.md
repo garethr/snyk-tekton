@@ -80,4 +80,6 @@ spec:
       claimName: snykly-source-pvc
 ```
 
+![Snykly in Tekton](assets/snyk-tekton.png)
+
 See the individual Actions linked above for per-language instructions.
