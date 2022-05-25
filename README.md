@@ -16,7 +16,7 @@ you are using. We currently support:
 * [Ruby](ruby)
 * [Scala](scala)
 * [Swift](swift)
-* [Contaners](container)
+* [Containers](container)
 * [Infrastructure as Code](iac)
 
 
